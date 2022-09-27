@@ -35,12 +35,18 @@ public class RegionServices {
         if (region.getId() != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Region already exist!");
         }
+        if (regionRepository.existsByName(region.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Region is already exists");
+        }
         return regionRepository.save(region);
     }
 
     public Region update(long id, Region region) {
         getById(id);
         region.setId(id);
+        if (regionRepository.existsByName(region.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Region is already exists");
+        }
         return regionRepository.save(region);
     }
 

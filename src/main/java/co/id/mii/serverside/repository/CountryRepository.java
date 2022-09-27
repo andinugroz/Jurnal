@@ -7,5 +7,5 @@ import co.id.mii.serverside.models.Country;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
-
+    Boolean existsByName(String name);
 }

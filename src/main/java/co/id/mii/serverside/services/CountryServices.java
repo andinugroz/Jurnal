@@ -26,14 +26,17 @@ public class CountryServices {
 
     public Country getById(long id) {
         if (!countryRepository.findById(id).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Region Not Found!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Country Not Found!");
         }
         return countryRepository.findById(id).get();
     }
 
     public Country create(Country country) {
         if (country.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Region already exist!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country already exist!");
+        }
+        if (countryRepository.existsByName(country.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country is already exists");
         }
         return countryRepository.save(country);
     }
@@ -41,6 +44,9 @@ public class CountryServices {
     public Country update(long id, Country country) {
         getById(id);
         country.setId(id);
+        if (countryRepository.existsByName(country.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country is already exists");
+        }
         return countryRepository.save(country);
     }
 
