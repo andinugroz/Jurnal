@@ -3,6 +3,8 @@ package co.id.mii.serverside.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,18 @@ public class RegionControllers {
     public List<Region> getAll() {
         return regionService.getAll();
     }
+
+    // @GetMapping("/regionId/{id}")
+    // public ResponseEntity<List<Region>> findByRegionId(@PathVariable(value =
+    // "id") Long id) {
+    // return new ResponseEntity(regionService.findByRegionIdEntity(id),
+    // HttpStatus.OK);
+    // }
+
+    // @GetMapping("/getall")
+    // public ResponseEntity<List<Region>> findAllEntity() {
+    // return new ResponseEntity(regionService.findByRegion(), HttpStatus.OK);
+    // }
 
     @GetMapping("/{id}")
     public Region getById(@PathVariable Long id) {

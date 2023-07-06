@@ -28,7 +28,8 @@ public class RegionServices {
         if (!regionRepository.findById(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Region Not Found!");
         }
-        return regionRepository.findById(id).get();
+        return regionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Region not Found"));
     }
 
     public Region create(Region region) {
@@ -55,5 +56,13 @@ public class RegionServices {
         regionRepository.delete(region);
         return region;
     }
+
+    // public List<Region> findByRegion() {
+    // return regionRepository.findAllJQLEntity();
+    // }
+
+    // public List<Region> findByRegionIdEntity(Long id) {
+    // return regionRepository.findByRegionIdNative(id);
+    // }
 
 }

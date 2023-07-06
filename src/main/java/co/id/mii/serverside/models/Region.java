@@ -1,27 +1,36 @@
 package co.id.mii.serverside.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "region")
 public class Region {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "name")
+    @Column(nullable = false)
     private String name;
 
-    public Region() {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
+    private List<Country> countries;
 
+    public Region() {
     }
 
-    public Region(String name) {
+    public Region(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -39,6 +48,14 @@ public class Region {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
     }
 
     @Override

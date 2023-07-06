@@ -33,20 +33,18 @@ public class CountryServices {
 
     public Country create(Country country) {
         if (country.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country already exist!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country already exist");
         }
-        if (countryRepository.existsByName(country.getName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country is already exists");
-        }
+        findByName(country.getName());
         return countryRepository.save(country);
     }
 
     public Country update(long id, Country country) {
-        getById(id);
-        country.setId(id);
-        if (countryRepository.existsByName(country.getName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country is already exists");
+        Country oldCountry = getById(id);
+        if (!oldCountry.getName().equals(country.getName())) {
+            findByName(country.getName());
         }
+        country.setId(id);
         return countryRepository.save(country);
     }
 
@@ -54,5 +52,15 @@ public class CountryServices {
         Country country = getById(id);
         countryRepository.delete(country);
         return country;
+    }
+
+    public void findByName(String name) {
+        if (countryRepository.findByName(name).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country already exists");
+        }
+    }
+
+    public List<Country> findByRegionId(Long id) {
+        return countryRepository.findByRegionIdNative(id);
     }
 }
