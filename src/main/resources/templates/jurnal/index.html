@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>Repository jurnal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/jurnal}">DTS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav " >
+            <li class="nav-item" >
+                <a style="color: white;"  class="nav-link active" aria-current="page" th:href="@{/jurnal}" >Home</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white;"  class="nav-link" th:href="@{/jurnal}">Jurnal Status</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white;"  class="nav-link" th:href="@{/jurnal/status}">Jurnal Approve</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: white;"  class="nav-link" th:href="@{/jurnal/addjurnal}">Add Jurnal</a>
+            </li>
+        </ul>
+        </div>
+        </div>
+    </nav>
+    <section class="container mt-5">
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold mb-3">List Jurnal</h1>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addjurnal">
+                Create Jurnal
+            </button>
+        </div>
+        <table id="table-jurnal" class="table table-bordered ">
+            <thead class="table-dark">
+                <tr>
+                    <th class="col-1">No</th>
+                    <th class="col-2">Judul</th>
+                    <th class="col-1">Terbit</th>
+                    <th class="col-1">Jurusan</th>
+                    <th class="col-1">Prodi</th>
+                    <th class="col-1">Penulis</th>
+                    <th class="col-1">Universitas</th>
+                    <th class="col-1">Status</th>
+                    <th class="col-3">Action</th>
+                </tr>
+            </thead>
+        </table>
+    </section>
+
+    <!-- Start Modal Create Jurnal -->
+    <div class="modal fade" id="addjurnal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="staticBackdropLabel">Create Jurnal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div id="toast"> </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="judul" class="form-label">Judul</label>
+                            <input type="text" class="form-control" id="jurnalJudul" >
+                            <input type="hidden" class="form-control" id="jurnalData" >
+                            <label for="date" class="form-label">Terbit</label>
+                            <input type="date" class="form-control" id="jurnalTanggal" >
+                            <label for="name" class="form-label">Jurusan</label>
+                            <input type="text" class="form-control" id="jurnalJurusan" >
+                            <label for="name" class="form-label">Prodi</label>
+                            <input type="text" class="form-control" id="jurnalProdi" >
+                            <label for="name" class="form-label">Penulis</label>
+                            <input type="text" class="form-control" id="jurnalPenulis" >
+                            <label for="name" class="form-label">Universitas</label>
+                            <input type="text" class="form-control" id="jurnalUniversitas" >
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Status</label>
+                                <select id="jurnalStatus" class="form-select" aria-label="Default select example">
+                                    <option selected>Jurnal Status</option>
+                                    <option value="Acc">Acc</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Reject">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="create-jurnal">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- End Modal Create Jurnal -->
+
+<!-- Start Modal Update -->
+<div class="modal fade" id="updateJurnal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title fw-bold" id="staticBackdropLabel">Update Region</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form>
+            <div id="toast"> </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Judul</label>
+                    <input type="text" class="form-control" id="update-judul">
+                    <input type="hidden" class="form-control" id="update-id" >
+                    <input type="hidden" class="form-control" id="update-data">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Terbit</label>
+                    <input type="date" class="form-control" id="update-tanggal">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Jurusan</label>
+                    <input type="text" class="form-control" id="update-jurusan">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Prodi</label>
+                    <input type="text" class="form-control" id="update-prodi">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Penulis</label>
+                    <input type="text" class="form-control" id="update-penulis">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Universitas</label>
+                    <input type="text" class="form-control" id="update-universitas">
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Status</label>
+                    <select id="update-status" class="form-select" aria-label="Default select example">
+                        <option selected>Update Status</option>
+                        <option value="Acc">Acc</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Reject">Reject</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Abstrak</label>
+                    <input type="text" class="form-control" id="update-abstrak">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="update-jurnal">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- End Modal Update -->
+
+
+    <!-- Start Modal Detail -->
+    <div class="modal fade" id="detailJurnal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detail jurnal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 hidden id="detail-id">id</h3>
+                    <h1 id="detail-judul">judul</h1>
+                    <h4 id="detail-penulis">Penulis</h4>
+                    <p id="detail-jurusan">jurusan</p>
+                    <p id="detail-universitas">Universitas</p>
+                    <p id="detail-status">status</p>
+                    <p id="detail-prodi">prodi</p> <p id="detail-tanggal">Terbit</p>
+                    <p class="" id="detail-abstrak">Abstak</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Detail -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js">
+    </script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script th:src="@{js/jurnal.js}"></script>
+
+
+</body>
+
+</html>
